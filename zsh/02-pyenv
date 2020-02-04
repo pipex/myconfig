@@ -1,3 +1,4 @@
+# vim: filetype=zsh
 # Load pyenv automatically by appending
 # the following to ~/.zshrc:
 which pyenv &>/dev/null && eval "$(pyenv init -)"

@@ -1,4 +1,4 @@
-#!/bin/bash
+# vim: filetype=zsh
 if which docker-machine &>/dev/null; then
     alias embeddable='docker run --rm --privileged --mount type=bind,source=$(pwd),destination=/home/user/work --device=/dev/ttyUSB0 --device=/dev/ttyUSB1 -ti niclabs/embeddable'
     alias embeddable-avr='docker run --rm --privileged --mount type=bind,source=$(pwd),destination=/home/user/work --device=/dev/ttyUSB0 --device=/dev/ttyUSB1 -ti niclabs/embeddable:avr'
