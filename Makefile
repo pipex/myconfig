@@ -3,6 +3,7 @@
 ##############################################
 
 PYTHON_VERSION ?= 3.7.6
+NODE_VERSION ?= lts/dubnium
 
 
 ##############################################
@@ -98,6 +99,13 @@ $(BIN)/tmux: $(BIN)/brew | $(CONFIG)
 	./tmux-config/install.sh
 	ln -sf $(CONFIG)/tmux/tmux.conf ~/.tmux.conf
 	rm -rf ./tmux-config
+
+# NVM and Node
+.PHONY: node
+node: $(BIN)/node
+$(BIN)/node: $(BIN)/brew
+	brew install nvm
+	source $(CONFIG)/zsh/02-nvm && nvm install $(NODE_VERSION)
 
 # Vagrant
 .PHONY: vagrant
