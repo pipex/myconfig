@@ -1,0 +1,9 @@
+#!/bin/bash
+if which docker-machine &>/dev/null; then
+    alias embeddable='docker run --rm --privileged --mount type=bind,source=$(pwd),destination=/home/user/work --device=/dev/ttyUSB0 --device=/dev/ttyUSB1 -ti niclabs/embeddable'
+    alias embeddable-avr='docker run --rm --privileged --mount type=bind,source=$(pwd),destination=/home/user/work --device=/dev/ttyUSB0 --device=/dev/ttyUSB1 -ti niclabs/embeddable:avr'
+else
+    alias embeddable='docker run --rm --privileged --mount type=bind,source=$(pwd),destination=/home/user/work -ti niclabs/embeddable'
+    alias embeddable-avr='docker run --rm --privileged --mount type=bind,source=$(pwd),destination=/home/user/work -ti niclabs/embeddable:avr'
+fi
+alias embeddable-sh='ID=$(docker ps --format "{{.ID}},{{.Image}}" | grep -m 1 "niclabs/embeddable" | cut -d , -f 1); docker exec -it $ID bash'
