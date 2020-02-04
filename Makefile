@@ -151,6 +151,12 @@ $(APPS)/Spotify.app: | $(BIN)/brew
 $(APPS)/AppCleaner.app: | $(BIN)/brew
 	brew cask install appcleaner
 
+$(APPS)/AppCleaner.app: | $(BIN)/brew
+	brew cask install appcleaner
+
+$(APPS)/The\ Unarchiver.app: | $(BIN)/brew
+	brew cask install the-unarchiver
+
 # VirtualBox
 .PHONY: virtualbox
 virtualbox: $(APPS)/VirtualBox.app
