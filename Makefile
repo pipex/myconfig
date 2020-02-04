@@ -82,6 +82,12 @@ $(BIN)/nvim: $(BIN)/brew ~/.vimrc $(BIN)/fzf $(BIN)/rg
 	pip install --upgrade neovim
 	nvim -c ":PlugInstall"
 
+# Autojump
+.PHONY: j
+j: $(BIN)/j
+$(BIN)/j: $(BIN)/brew
+	brew install autojump
+
 # Tmux
 .PHONY: tmux
 tmux: $(BIN)/tmux
@@ -92,10 +98,23 @@ $(BIN)/tmux: $(BIN)/brew | $(CONFIG)
 	./tmux-config/install.sh
 	ln -sf $(CONFIG)/tmux/tmux.conf ~/.tmux.conf
 	rm -rf ./tmux-config
-	
+
+# Vagrant
+.PHONY: vagrant
+vagrant: $(BIN)/vagrant
+$(BIN)/vagrant: $(BIN)/brew virtualbox
+	brew cask install vagrant
+
+# Docker
+.PHONY: docker
+docker: $(BIN)/docker virtualbox
+$(BIN)/docker: $(BIN)/brew
+	brew install docker-machine docker
+	docker-machine create default
+	eval $(docker-machine env default)
 
 .PHONY: install-commands
-install-commands: vim
+install-commands: vim tmux j docker vagrant python docker
 
 
 ##############################################
@@ -118,9 +137,17 @@ $(APPS)/Firefox.app: | $(BIN)/brew
 $(APPS)/Magnet.app: | $(BIN)/brew
 	echo "Not implemented yet. Install Magnet using APP store"
 
-.PHONY: install-apps
-install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app
+$(APPS)/Spotify.app: | $(BIN)/brew
+	brew cask install spotify
 
+# VirtualBox
+.PHONY: virtualbox
+virtualbox: $(APPS)/VirtualBox.app
+$(APPS)/VirtualBox.app: | $(BIN)/brew
+	brew cask install virtualbox
+
+.PHONY: install-apps
+install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS)/VirtualBox.app $(APPS)/Spotify.app
 
 
 ##############################################
