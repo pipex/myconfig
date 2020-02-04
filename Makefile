@@ -102,8 +102,8 @@ $(BIN)/tmux: $(BIN)/brew | $(CONFIG)
 
 # NVM and Node
 .PHONY: node
-node: $(BIN)/node
-$(BIN)/node: $(BIN)/brew
+node: $(BIN)/nvm
+$(BIN)/nvm: $(BIN)/brew
 	brew install nvm
 	source $(CONFIG)/zsh/02-nvm && nvm install $(NODE_VERSION)
 
@@ -122,7 +122,7 @@ $(BIN)/docker: $(BIN)/brew
 	eval $(docker-machine env default)
 
 .PHONY: install-commands
-install-commands: vim tmux j docker vagrant python docker
+install-commands: vim tmux j docker vagrant python docker node
 
 
 ##############################################
@@ -164,13 +164,12 @@ $(APPS)/VirtualBox.app: | $(BIN)/brew
 	brew cask install virtualbox
 
 .PHONY: install-apps
-install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS)/VirtualBox.app $(APPS)/Spotify.app $(APPS)/AppCleaner.app
+install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS)/VirtualBox.app $(APPS)/Spotify.app $(APPS)/AppCleaner.app $(APPS)/The\ Unarchiver.app
 
 
 ##############################################
 # Install everything
 ##############################################
-
 
 .PHONY: install
 install: bootstrap install-commands install-apps
