@@ -140,6 +140,9 @@ $(APPS)/Magnet.app: | $(BIN)/brew
 $(APPS)/Spotify.app: | $(BIN)/brew
 	brew cask install spotify
 
+$(APPS)/AppCleaner.app: | $(BIN)/brew
+	brew cask install appcleaner
+
 # VirtualBox
 .PHONY: virtualbox
 virtualbox: $(APPS)/VirtualBox.app
@@ -147,7 +150,7 @@ $(APPS)/VirtualBox.app: | $(BIN)/brew
 	brew cask install virtualbox
 
 .PHONY: install-apps
-install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS)/VirtualBox.app $(APPS)/Spotify.app
+install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS)/VirtualBox.app $(APPS)/Spotify.app $(APPS)/AppCleaner.app
 
 
 ##############################################
