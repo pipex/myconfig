@@ -1,9 +1,14 @@
-#!/bin/sh
-
-echo "Installing homebrew"
+#!/bin/sh -e
+echo "Installing base requirements"
+echo "* Homebrew"
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-echo "Instaling git"
+echo "* git"
 brew install git
 
-# TODO: download config and run makefile
+echo "* downloading configuration"
+git clone https://github.com/pipex/myconfig.git ~/.myconfig
+
+echo "DONE"
+echo "Installing everything else"
+cd ~/.myconfig && make install
