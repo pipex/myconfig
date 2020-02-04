@@ -1,0 +1,6 @@
+# Use neovim if it exists
+which nvim &>/dev/null
+if [ $? -eq 0 ]; then
+    alias vi=nvim
+    export EDITOR=nvim
+fi

@@ -1,0 +1,52 @@
+## Colorize the ls output ##
+alias ls='ls -G'
+
+# ls abbreviations
+alias ll='ls -la'
+alias la='ls -a'
+
+## Show hidden files ##
+alias l.='ls -d .*'
+
+## get rid of command not found ##
+alias cd..='cd ..'
+
+## Colorize the grep command output for ease of use (good for log files)##
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Start calculator with math support
+alias bc='bc -l'
+
+# Create parent directories on demand
+alias mkdir='mkdir -pv'
+
+# New set of commands
+alias path='echo -e ${PATH//:/\\n}'
+alias now='date +"%T"'
+alias nowtime=now
+alias nowdate='date +"%d-%m-%Y"'
+
+# Stop after sending count ECHO_REQUEST packets #
+alias ping='ping -c 5'
+# Do not wait interval 1 second, go fast #
+alias fastping='ping -c 100 -s.2'
+
+# Other useful aliases
+alias reload='source ~/.bash_profile'
+alias ..="cd .."
+alias back='cd -'
+alias ~='cd ~'
+alias o='open'
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias cwd='pwd | tr -d "\r\n" | pbcopy' #copy working directory
+alias where="pwd"
+alias h='history'
+alias untar="tar -xvf"
+alias tmux="tmux -u"
+
+# The most important
+alias vi=vim
