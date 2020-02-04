@@ -53,14 +53,15 @@ $(BIN)/pyenv: $(BIN)/brew
 	brew install pyenv
 
 .PHONY: python
-python: $(BIN)/python
-$(BIN)/python: $(BIN)/brew $(BIN)/pyenv
-	pyenv install $(PYTHON_VERSION)
+python: $(BIN)/brew $(BIN)/pyenv
+	PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install $(PYTHON_VERSION)
 	pyenv global $(PYTHON_VERSION)
-	eval "$(pyenv init -)"
 	pip install --upgrade pip
-	
 
+.PHONY: rust
+rust:
+	curl -sf -L https://static.rust-lang.org/rustup.sh | sh
+	
 ~/.vimrc: $(CONFIG) 
 	ln -sf $(CONFIG)/vim/vimrc ~/.vimrc
 	ln -sf $(CONFIG)/vim/vimrc.local ~/.vimrc.local
@@ -75,13 +76,17 @@ $(BIN)/fzf: $(BIN)/brew
 $(BIN)/rg: $(BIN)/brew
 	brew install ripgrep
 
+$(BIN)/cmake: $(BIN)/brew
+	brew install cmake
+
 # Vim
 .PHONY: vim
 vim: $(BIN)/nvim
-$(BIN)/nvim: $(BIN)/brew ~/.vimrc $(BIN)/fzf $(BIN)/rg
+$(BIN)/nvim: ~/.vimrc $(BIN)/fzf $(BIN)/rg $(BIN)/cmake
 	brew install neovim
 	pip install --upgrade neovim
-	nvim -c ":PlugInstall"
+	nvim -c ":PlugInstall" -c ":q" -c ":q"
+	~/.vim/plugged/YouCompleteMe/install.py --clang-completer --rust-completer --ts-completer
 
 # Autojump
 .PHONY: j
@@ -119,10 +124,9 @@ docker: $(BIN)/docker virtualbox
 $(BIN)/docker: $(BIN)/brew
 	brew install docker-machine docker
 	docker-machine create default
-	eval $(docker-machine env default)
 
 .PHONY: install-commands
-install-commands: vim tmux j docker vagrant python docker node
+install-commands: python node rust vim tmux j docker
 
 
 ##############################################
@@ -147,9 +151,6 @@ $(APPS)/Magnet.app: | $(BIN)/brew
 
 $(APPS)/Spotify.app: | $(BIN)/brew
 	brew cask install spotify
-
-$(APPS)/AppCleaner.app: | $(BIN)/brew
-	brew cask install appcleaner
 
 $(APPS)/AppCleaner.app: | $(BIN)/brew
 	brew cask install appcleaner
