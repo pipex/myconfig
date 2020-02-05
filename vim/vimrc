@@ -350,6 +350,11 @@ set autoread
 "*****************************************************************************
 
 " Coc
+"
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
 " Completion
 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
@@ -369,8 +374,9 @@ inoremap <silent><expr> <c-.> coc#refresh()
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
 " Or use `complete_info` if your vim support it, like:
-inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+"inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 
 " 'Smart' nevigation
