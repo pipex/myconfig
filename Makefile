@@ -68,6 +68,7 @@ rust:
 	ln -sf $(CONFIG)/vim/vimrc.local.bundles ~/.vimrc.local.bundles
 	mkdir -p ~/.config/nvim
 	ln -sf $(CONFIG)/vim/nvim-init.vim ~/.config/nvim/init.vim
+	ln -sf $(CONFIG)/vim/coc-settings.json ~/.config/nvim/coc-settings.json
 
 # Install fzf and rg as vim dependencies
 $(BIN)/fzf: $(BIN)/brew
@@ -76,17 +77,19 @@ $(BIN)/fzf: $(BIN)/brew
 $(BIN)/rg: $(BIN)/brew
 	brew install ripgrep
 
-$(BIN)/cmake: $(BIN)/brew
-	brew install cmake
+$(BIN)/ccls: $(BIN)/brew
+	brew install ccls
+
+$(BIN)/ctags: $(BIN)/brew
+	brew install ctags
 
 # Vim
 .PHONY: vim
 vim: $(BIN)/nvim
-$(BIN)/nvim: ~/.vimrc $(BIN)/fzf $(BIN)/rg $(BIN)/cmake
+$(BIN)/nvim: ~/.vimrc $(BIN)/fzf $(BIN)/rg $(BIN)/ccls $(BIN)/ctags
 	brew install neovim
 	pip install --upgrade neovim
 	nvim -c ":PlugInstall" -c ":q" -c ":q"
-	~/.vim/plugged/YouCompleteMe/install.py --clang-completer --rust-completer --ts-completer
 
 # Autojump
 .PHONY: j
@@ -110,7 +113,9 @@ $(BIN)/tmux: $(BIN)/brew | $(CONFIG)
 node: $(BIN)/nvm
 $(BIN)/nvm: $(BIN)/brew
 	brew install nvm
-	source $(CONFIG)/zsh/02-nvm && nvm install $(NODE_VERSION)
+	source $(CONFIG)/zsh/02-nvm && \
+		nvm install $(NODE_VERSION) && \
+		npm install -g yarn
 
 # Vagrant
 .PHONY: vagrant

@@ -5,9 +5,6 @@
 "*****************************************************************************
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
 
-let g:vim_bootstrap_langs = "c,html,javascript,python,rust,typescript"
-let g:vim_bootstrap_editor = "vim"				" nvim or vim
-
 if !filereadable(vimplug_exists)
   if !executable("curl")
     echoerr "You have to install curl or first install vim-plug yourself!"
@@ -27,20 +24,16 @@ call plug#begin(expand('~/.vim/plugged'))
 "*****************************************************************************
 "" Plug install packages
 "*****************************************************************************
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
-Plug 'vim-scripts/grep.vim'
 Plug 'vim-scripts/CSApprox'
 Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
 Plug 'Yggdroot/indentLine'
-Plug 'avelino/vim-bootstrap-updater'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 
@@ -60,10 +53,8 @@ Plug 'Shougo/vimproc.vim', {'do': g:make}
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
 
-"" Snippets
-
-"" Color
-Plug 'tomasr/molokai'
+" Semantic language support
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "*****************************************************************************
 "" Custom bundles
@@ -72,6 +63,7 @@ Plug 'tomasr/molokai'
 " c
 Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
 Plug 'ludwig/split-manpage.vim'
+Plug 'rhysd/vim-clang-format'
 
 
 " html
@@ -89,14 +81,10 @@ Plug 'jelera/vim-javascript-syntax'
 
 " python
 "" Python Bundle
-Plug 'davidhalter/jedi-vim'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 
 
 " rust
-" Vim racer
-Plug 'racer-rust/vim-racer'
-
 " Rust.vim
 Plug 'rust-lang/rust.vim'
 
@@ -104,6 +92,12 @@ Plug 'rust-lang/rust.vim'
 " typescript
 Plug 'leafgarland/typescript-vim'
 Plug 'HerringtonDarkholme/yats.vim'
+
+" Other languages
+Plug 'cespare/vim-toml'
+Plug 'stephpy/vim-yaml'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 
 
 "*****************************************************************************
@@ -123,11 +117,17 @@ filetype plugin indent on
 "*****************************************************************************
 "" Basic Setup
 "*****************************************************************************"
+" No vi compatible
+set autoindent
+set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
+
 "" Encoding
 set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
-set ttyfast
+
+" Always draw sign column. Prevent buffer moving when adding/deleting sign.
+set signcolumn=yes
 
 "" Fix backspace indent
 set backspace=indent,eol,start
@@ -143,12 +143,42 @@ let mapleader=','
 
 "" Enable hidden buffers
 set hidden
+set nowrap
 
 "" Searching
 set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+set gdefault
+
+" Search results centered please
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+
+" Very magic by default
+nnoremap ? ?\v
+nnoremap / /\v
+cnoremap %s/ %sm/
+
+set diffopt+=iwhite " No whitespace in vimdiff
+" Make diffing better: https://vimways.org/2018/the-power-of-diff/
+set diffopt+=algorithm:patience
+set diffopt+=indent-heuristic
+set colorcolumn=80 " and give me a colored column
+set showcmd " Show (partial) command in status line.
+set mouse=a " Enable mouse usage (all modes) in terminals
+set shortmess+=c " don't give |ins-completion-menu| messages.
+
+" Wrapping options
+set formatoptions=tc " wrap text and comments using textwidth
+set formatoptions+=r " continue comments when pressing ENTER in I mode
+set formatoptions+=q " enable formatting of comments with gq
+set formatoptions+=n " detect lists for formatting
+set formatoptions+=b " auto-wrap in insert mode, and do not wrap old long lines
 
 set fileformats=unix,dos,mac
 
@@ -164,12 +194,18 @@ let g:session_autoload = "no"
 let g:session_autosave = "no"
 let g:session_command_aliases = 1
 
+" Permanent undo
+set undodir=~/.vimdid
+set undofile
+
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
 syntax on
 set ruler
+set relativenumber " Relative line numbers
 set number
+set ttyfast
 
 let no_buffers_menu=1
 silent! colorscheme molokai
@@ -259,24 +295,6 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
 
-"" NERDTree configuration
-let g:NERDTreeChDirMode=2
-let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
-let g:NERDTreeShowBookmarks=1
-let g:nerdtree_tabs_focus_on_files=1
-let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let g:NERDTreeWinSize = 50
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
-nnoremap <silent> <F2> :NERDTreeFind<CR>
-nnoremap <silent> <F3> :NERDTreeToggle<CR>
-
-" grep.vim
-nnoremap <silent> <leader>f :Rgrep<CR>
-let Grep_Default_Options = '-IR'
-let Grep_Skip_Files = '*.log *.db'
-let Grep_Skip_Dirs = '.git node_modules'
-
 " terminal emulation
 nnoremap <silent> <leader>sh :terminal<CR>
 
@@ -332,9 +350,54 @@ set autoread
 "" Mappings
 "*****************************************************************************
 
+" Coc
+" Completion
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Use <c-.> to trigger completion.
+inoremap <silent><expr> <c-.> coc#refresh()
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+
+" 'Smart' nevigation
+nmap <silent> E <Plug>(coc-diagnostic-prev)
+nmap <silent> W <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>l <Plug>(coc-diagnostic-info)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
 "" Split
 noremap <Leader>h :<C-u>split<CR>
 noremap <Leader>v :<C-u>vsplit<CR>
+" Sane splits
+set splitright
+set splitbelow
 
 "" Git
 noremap <Leader>ga :Gwrite<CR>
@@ -368,33 +431,37 @@ noremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 "" fzf.vim
 set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
-let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
-
-" The Silver Searcher
-if executable('ag')
-  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
-  set grepprg=ag\ --nogroup\ --nocolor
-endif
+set wildignore=.hg,.svn,*~,*.png,*.jpg,*.gif,*.settings,Thumbs.db,*.min.js,*.swp,publish/*,intermediate/*,*.o,*.hi,Zend,vendor
+let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**'       -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
 
 " ripgrep
 if executable('rg')
-  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-  set grepprg=rg\ --vimgrep
-  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+    let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+    noremap <leader>s :Rg<cr>
+    let g:fzf_layout = { 'down': '~20%' }
+    command! -bang -nargs=* Rg
+      \ call fzf#vim#grep(
+      \   'rg --column --line-number --no-heading --color=always --hidden --follow --glob "!.git/*" '.shellescape(<q-args>), 1,
+      \   <bang>0 ? fzf#vim#with_preview('up:60%')
+      \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \   <bang>0)
 endif
+
+function! s:list_cmd()
+  let base = fnamemodify(expand('%'), ':h:.:S')
+  return base == '.' ? 'fd --type file --follow' : printf('fd --type file --follow | proximity-sort %s', shellescape(expand('%')))
+endfunction
+
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, {'source': s:list_cmd(),
+  \                               'options': '--tiebreak=index'}, <bang>0)
+
 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>e :FZF -m<CR>
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
-
-" snippets
-"let g:UltiSnipsExpandTrigger="<tab>"
-"let g:UltiSnipsJumpForwardTrigger="<tab>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-"let g:UltiSnipsEditSplit="vertical"
 
 " ale
 let g:ale_linters = {}
@@ -453,6 +520,46 @@ vnoremap K :m '<-2<CR>gv=gv
 "" Open current line on GitHub
 nnoremap <Leader>o :.Gbrowse<CR>
 
+" ; as :
+nnoremap ; :
+
+" Use Ctrl+C to go back to normal mode
+nnoremap <C-c> <Esc>
+inoremap <C-c> <Esc>
+vnoremap <C-c> <Esc>
+snoremap <C-c> <Esc>
+xnoremap <C-c> <Esc>
+cnoremap <C-c> <Esc>
+onoremap <C-c> <Esc>
+lnoremap <C-c> <Esc>
+tnoremap <C-c> <Esc>
+
+vnoremap <C-x> :nohlsearch<cr>
+nnoremap <C-x> :nohlsearch<cr>
+
+" Jump to start and end of line using the home row keys
+map H ^
+map L $
+
+" No arrow keys --- force yourself to use the home row
+"nnoremap <up> <nop>
+"nnoremap <down> <nop>
+"inoremap <up> <nop>
+"inoremap <down> <nop>
+"inoremap <left> <nop>
+"inoremap <right> <nop>
+"
+"" Left and right can switch buffers
+"nnoremap <left> :bp<CR>
+"nnoremap <right> :bn<CR>
+
+" Move by line
+nnoremap j gj
+nnoremap k gk
+
+" <leader><leader> toggles between buffers
+nnoremap <leader><leader> <c-^>
+
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
@@ -466,9 +573,16 @@ autocmd FileType cpp setlocal tabstop=4 shiftwidth=4 expandtab
 " for html files, 2 spaces
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
 
+let g:user_emmet_install_global = 0
+autocmd FileType html,css,svelte,jsx,tsx EmmetInstall
+let g:user_emmet_leader_key='<C-F>'
+
 
 " javascript
 let g:javascript_enable_domhtmlcss = 1
+
+" allow jsonc
+autocmd FileType json syntax match Comment +\/\/.\+$+
 
 " vim-javascript
 augroup vimrc-javascript
@@ -486,17 +600,6 @@ augroup vimrc-python
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
-" jedi-vim
-let g:jedi#popup_on_dot = 0
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = "<leader>d"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#rename_command = "<leader>r"
-let g:jedi#show_call_signatures = "0"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#smart_auto_mappings = 0
-
 " ale
 :call extend(g:ale_linters, {
     \'python': ['flake8'], })
@@ -508,15 +611,6 @@ let g:airline#extensions#virtualenv#enabled = 1
 " Default highlight is better than polyglot
 let g:polyglot_disabled = ['python']
 let python_highlight_all = 1
-
-
-" rust
-" Vim racer
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
-
 
 " typescript
 let g:yats_host_keyword = 1
