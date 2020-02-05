@@ -1,4 +1,4 @@
-" vim-bootstrap 
+" vim-bootstrap
 
 "*****************************************************************************
 "" Vim-PLug core
@@ -228,7 +228,7 @@ else
   let g:indentLine_char = '┆'
   let g:indentLine_faster = 1
 
-  
+
   if $COLORTERM == 'gnome-terminal'
     set term=gnome-256color
   else
@@ -236,7 +236,7 @@ else
       set term=xterm-256color
     endif
   endif
-  
+
 endif
 
 
@@ -374,9 +374,9 @@ inoremap <silent><expr> <c-.> coc#refresh()
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-"imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
+imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
 " Or use `complete_info` if your vim support it, like:
-inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
+"inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
 
 
 " 'Smart' nevigation
@@ -420,19 +420,11 @@ nnoremap <leader>ss :SaveSession<Space>
 nnoremap <leader>sd :DeleteSession<CR>
 nnoremap <leader>sc :CloseSession<CR>
 
-"" Tabs
-nnoremap <Tab> gt
-nnoremap <S-Tab> gT
-nnoremap <silent> <S-t> :tabnew<CR>
-
 "" Set working directory
 nnoremap <leader>. :lcd %:p:h<CR>
 
 "" Opens an edit command with the path of the currently edited file filled in
 noremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-
-"" Opens a tab edit command with the path of the currently edited file filled
-noremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 "" fzf.vim
 set wildmode=list:longest,list:full
@@ -452,21 +444,13 @@ if executable('rg')
       \   <bang>0)
 endif
 
-function! s:list_cmd()
-  let base = fnamemodify(expand('%'), ':h:.:S')
-  return base == '.' ? 'fd --type file --follow' : printf('fd --type file --follow | proximity-sort %s', shellescape(expand('%')))
-endfunction
-
-command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, {'source': s:list_cmd(),
-  \                               'options': '--tiebreak=index'}, <bang>0)
-
-
-cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <silent> <leader>b :Buffers<CR>
-nnoremap <silent> <leader>e :FZF -m<CR>
+nnoremap <silent> <C-p> :FZF -m<CR>
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
+
+" Search tags in current buffer
+nnoremap <silent> <leader>t :BTags<CR>
 
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
@@ -487,17 +471,12 @@ noremap YY "+y<CR>
 noremap <leader>p "+gP<CR>
 noremap XX "+x<CR>
 
-if has('macunix')
-  " pbcopy for OSX copy/paste
-  vmap <C-x> :!pbcopy<CR>
-  vmap <C-c> :w !pbcopy<CR><CR>
-endif
+"" Buffer nav with tab
+nnoremap <Tab> :bn<CR>
+noremap <S-Tab> :bp<CR>
 
-"" Buffer nav
-noremap <leader>z :bp<CR>
-noremap <leader>q :bp<CR>
-noremap <leader>x :bn<CR>
-noremap <leader>w :bn<CR>
+" <leader><leader> toggles between buffers
+nnoremap <leader><leader> <c-^>
 
 "" Close buffer
 noremap <leader>c :bd<CR>
@@ -514,6 +493,8 @@ noremap <C-h> <C-w>h
 "" Vmap for maintain Visual Mode after shifting > and <
 vmap < <gv
 vmap > >gv
+
+nnoremap J <nop>
 
 "" Move visual block
 vnoremap J :m '>+1<CR>gv=gv
@@ -536,9 +517,6 @@ onoremap <C-c> <Esc>
 lnoremap <C-c> <Esc>
 tnoremap <C-c> <Esc>
 
-vnoremap <C-x> :nohlsearch<cr>
-nnoremap <C-x> :nohlsearch<cr>
-
 " Jump to start and end of line using the home row keys
 map H ^
 map L $
@@ -559,8 +537,8 @@ map L $
 nnoremap j gj
 nnoremap k gk
 
-" <leader><leader> toggles between buffers
-nnoremap <leader><leader> <c-^>
+" Quick-save
+nmap <leader>w :w<CR>
 
 "*****************************************************************************
 "" Custom configs
