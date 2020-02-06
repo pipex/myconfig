@@ -433,7 +433,7 @@ let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/
 
 " ripgrep
 if executable('rg')
-    let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+    let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*" --glob "!**/target/*"'
     noremap <leader>s :Rg<cr>
     let g:fzf_layout = { 'down': '~20%' }
     command! -bang -nargs=* Rg
@@ -591,7 +591,11 @@ let python_highlight_all = 1
 " typescript
 let g:yats_host_keyword = 1
 
-
+" rust
+let g:rustfmt_autosave = 1
+let g:rustfmt_emit_files = 1
+let g:rustfmt_fail_silently = 0
+let $RUST_SRC_PATH = systemlist("rustc --print sysroot")[0] . "/lib/rustlib/src/rust/src"
 
 "*****************************************************************************
 "*****************************************************************************
