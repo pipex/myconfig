@@ -238,6 +238,13 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0x50-0x120000</key>
+		<dict>
+			<key>Action</key>
+			<integer>13</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
 		<key>0x70-0x100000</key>
 		<dict>
 			<key>Action</key>
@@ -391,7 +398,7 @@
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
 	<string>440 434 799 448 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>844 0 836 1027 0 0 1680 1027 </string>
+	<string>837 0 843 1027 0 0 1680 1050 </string>
 	<key>NeverWarnAboutOverrides</key>
 	<true/>
 	<key>NeverWarnAboutOverrides_selection</key>
@@ -1460,6 +1467,34 @@
 					<integer>11</integer>
 					<key>Text</key>
 					<string>0x01 0x7c</string>
+				</dict>
+				<key>0x68-0x40000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x01 0x1b 0x5b 0x44</string>
+				</dict>
+				<key>0x6a-0x40000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x01 0x1b 0x5b 0x42</string>
+				</dict>
+				<key>0x6b-0x40000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x01 0x1b 0x5b 0x41</string>
+				</dict>
+				<key>0x6c-0x40000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x01 0x1b 0x5b 0x43 </string>
 				</dict>
 				<key>0x74-0x100000</key>
 				<dict>
@@ -2702,7 +2737,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-02-04T16:38:31Z</date>
+	<date>2020-02-05T16:38:32Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
@@ -2713,6 +2748,8 @@
 	<false/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
+	<key>findMode_iTerm</key>
+	<integer>0</integer>
 	<key>iTerm Version</key>
 	<string>3.3.8</string>
 </dict>
