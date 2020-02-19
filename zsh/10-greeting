@@ -2,40 +2,56 @@
 ## Show greeting when loading
 ## It must be the last item loaded
 
+
+# Print number of lines
+# returned by the command
+lines() {
+    echo $(($(exec $* | sed '/^\s*$/d' | wc -l)))
+}
+
 if `which todo.sh &>/dev/null`; then
+    todo() {
+        TODOTXT_VERBOSE=0 todo.sh -P ls $*
+    }
+    
     # Print list of todos
     r=$((1 + RANDOM % 100))
 
-    priority_0=$(todo.sh -P ls -"(A)" -"(B)" -"(C)" | sed -e "/--/q" | grep -v "\-\-")
-    priority_c=$(todo.sh -P ls "(C)" | sed -e "/--/q" | grep -v "\-\-")
-    priority_b=$(todo.sh -P ls "(B)" | sed -e "/--/q" | grep -v "\-\-")
-    priority_a=$(todo.sh -P ls "(A)" | sed -e "/--/q" | grep -v "\-\-")
-
     todos=""
+    total=$(lines todo)
+    showing=0
 
     # Always show high priority items
-    if [ `echo -n $priority_a | wc -c` -gt 0 ]; then
-        todos="$priority_a\n"
+    h=$(lines todo "(A)")
+    if [ $h -gt 0 ]; then
+        todos="$(todo "(A)")\n"
+        showing=$(($showing + $h))
     fi
 
     # show B priority 75% of the time
-    if [ $r -lt 75 ] && [ `echo -n $priority_b | wc -c` -gt 0 ]; then
-        todos="$todos$priority_b\n"
+    m=$(lines todo "(B)")
+    if [ $r -lt 75 ] && [ $m -gt 0 ]; then
+        todos="$todos$(todo "(B)")\n"
+        showing=$(($showing + $m))
     fi
 
     # show C priority 50% of the time
-    if [ $r -lt 50 ] && [ `echo -n $priority_c | wc -c` -gt 0 ]; then
-        todos="$todos$priority_c\n"
+    l=$(lines todo "(C)")
+    if [ $r -lt 50 ] && [ $l -gt 0 ]; then
+        todos="$todos$(todo "(C)")\n"
+        showing=$(($showing + $l))
     fi
 
     # ocassionally show unimportant
-    if [ $r -lt 25 ] && [ `echo -c $priority_0 | wc -c` -gt 0 ]; then
-        todos="$todos$priority_0\n"
+    n=$(lines todo -"(A)" -"(B)" -"(C)")
+    if [ $r -lt 25 ] && [ $n -gt 0 ]; then
+        todos="$todos$(todo -"(A)" -"(B)" -"(C)")\n"
+        showing=$(($showing + $n))
     fi
 
-    if [ `echo -n $todos | wc -c` -gt 0 ]; then
+    if [ $showing -gt 0 ]; then
         echo
-        echo -e " \\e[1mTODOS:\\e[0m"
+        echo -e " \\e[1mTODOS (showing $showing of $total):\\e[0m"
         echo $todos | sed "s/^/   /"
     fi
 fi
