@@ -1,0 +1,41 @@
+# vim: filetype=zsh
+## Show greeting when loading
+## It must be the last item loaded
+
+if `which todo.sh &>/dev/null`; then
+    # Print list of todos
+    r=$((1 + RANDOM % 100))
+
+    priority_0=$(todo.sh -P ls -"(A)" -"(B)" -"(C)" | sed -e "/--/q" | grep -v "\-\-")
+    priority_c=$(todo.sh -P ls "(C)" | sed -e "/--/q" | grep -v "\-\-")
+    priority_b=$(todo.sh -P ls "(B)" | sed -e "/--/q" | grep -v "\-\-")
+    priority_a=$(todo.sh -P ls "(A)" | sed -e "/--/q" | grep -v "\-\-")
+
+    todos=""
+
+    # Always show high priority items
+    if [ `echo -n $priority_a | wc -c` -gt 0 ]; then
+        todos="$priority_a\n"
+    fi
+
+    # show B priority 75% of the time
+    if [ $r -lt 75 ] && [ `echo -n $priority_b | wc -c` -gt 0 ]; then
+        todos="$todos$priority_b\n"
+    fi
+
+    # show C priority 50% of the time
+    if [ $r -lt 50 ] && [ `echo -n $priority_c | wc -c` -gt 0 ]; then
+        todos="$todos$priority_c\n"
+    fi
+
+    # ocassionally show unimportant
+    if [ $r -lt 25 ] && [ `echo -c $priority_0 | wc -c` -gt 0 ]; then
+        todos="$todos$priority_0\n"
+    fi
+
+    if [ `echo -n $todos | wc -c` -gt 0 ]; then
+        echo
+        echo -e " \\e[1mTODOS:\\e[0m"
+        echo $todos | sed "s/^/   /"
+    fi
+fi
