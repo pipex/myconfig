@@ -51,3 +51,5 @@ alias tmux="tmux -u"
 
 # The most important
 alias vi=vim
+
+which todo.sh &>/dev/null && alias t="todo.sh"

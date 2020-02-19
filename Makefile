@@ -130,8 +130,14 @@ $(BIN)/docker: $(BIN)/brew
 	brew install docker-machine docker
 	docker-machine create default
 
+.PHONY: todo
+todo: $(BIN)/todo.sh
+$(BIN)/todo.sh: $(BIN)/brew
+	brew install todo-txt
+	ln -sf $(CONFIG)/todo.cfg ~/.todo.cfg
+
 .PHONY: install-commands
-install-commands: python node rust vim tmux j docker
+install-commands: python node rust vim tmux j docker todo
 
 
 ##############################################
