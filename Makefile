@@ -20,7 +20,7 @@ CONFIG=~/.myconfig
 
 # Install Homebrew
 $(BIN)/brew: 
-	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	/usr/bin/ruby -e "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # Install git
 $(BIN)/git:
@@ -37,9 +37,9 @@ fonts: | $(CONFIG)
 .PHONY: shell
 shell: | $(CONFIG)
 	# Install oh-my-zsh
-	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-	ln -sf $(CONFIG)/zsh/zshrc ~/.zshrc
-	ln -sf $(CONFIG)/zsh ~/.zsh
+	sh -c "$$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+		ln -sf $(CONFIG)/zsh/zshrc ~/.zshrc && \
+		ln -sf $(CONFIG)/zsh ~/.zsh
 
 .PHONY: bootstrap
 bootstrap: fonts shell
@@ -53,10 +53,10 @@ $(BIN)/pyenv: $(BIN)/brew
 	brew install pyenv
 
 .PHONY: python
-python: $(BIN)/brew $(BIN)/pyenv
+python: ~/.pyenv/versions/$(PYTHON_VERSION)/bin/python
+~/.pyenv/versions/$(PYTHON_VERSION)/bin/python: $(BIN)/brew $(BIN)/pyenv
 	PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install $(PYTHON_VERSION)
-	pyenv global $(PYTHON_VERSION)
-	pip install --upgrade pip
+	eval "$$(pyenv init -)" && pyenv global $(PYTHON_VERSION) && pip install --upgrade pip
 
 .PHONY: rust
 rust:
@@ -88,8 +88,9 @@ $(BIN)/ctags: $(BIN)/brew
 vim: $(BIN)/nvim
 $(BIN)/nvim: ~/.vimrc $(BIN)/fzf $(BIN)/rg $(BIN)/ccls $(BIN)/ctags
 	brew install neovim
-	pip install --upgrade neovim
-	nvim -c ":PlugInstall" -c ":q" -c ":q"
+	eval "$$(pyenv init -)" && \
+		pip install --upgrade neovim && \
+		nvim -c ":PlugInstall" -c ":q" -c ":q"
 
 # Autojump
 .PHONY: j
@@ -124,11 +125,11 @@ $(BIN)/vagrant: $(BIN)/brew virtualbox
 	brew cask install vagrant
 
 # Docker
-.PHONY: docker
-docker: $(BIN)/docker virtualbox
-$(BIN)/docker: $(BIN)/brew
+.PHONY: install-docker
+install-docker: $(BIN)/docker
+$(BIN)/docker: $(BIN)/brew virtualbox
 	brew install docker-machine docker
-	docker-machine create default
+	brew services start docker-machine
 
 .PHONY: todo
 todo: $(BIN)/todo.sh
@@ -137,7 +138,7 @@ $(BIN)/todo.sh: $(BIN)/brew
 	ln -sf $(CONFIG)/todo.cfg ~/.todo.cfg
 
 .PHONY: install-commands
-install-commands: python node rust vim tmux j docker todo
+install-commands: python node rust vim tmux j todo
 
 
 ##############################################
@@ -176,7 +177,7 @@ $(APPS)/VirtualBox.app: | $(BIN)/brew
 	brew cask install virtualbox
 
 .PHONY: install-apps
-install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS)/VirtualBox.app $(APPS)/Spotify.app $(APPS)/AppCleaner.app $(APPS)/The\ Unarchiver.app
+install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS)/Spotify.app $(APPS)/AppCleaner.app $(APPS)/The\ Unarchiver.app
 
 
 ##############################################
@@ -184,7 +185,7 @@ install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS
 ##############################################
 
 .PHONY: install
-install: bootstrap install-commands install-apps
+install: bootstrap install-commands install-apps install-docker
 
 
 .DEFAULT: install
