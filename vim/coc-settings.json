@@ -12,5 +12,5 @@
         }
     },
     "coc.preferences.formatOnSaveFiletypes": ["css", "Markdown", "javascript", 
-        "typescript", "svelte", "rust"]
+        "typescript", "svelte", "rust", "c", "cpp"]
 }
