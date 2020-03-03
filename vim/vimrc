@@ -566,6 +566,10 @@ let python_highlight_all = 1
 " typescript
 let g:yats_host_keyword = 1
 
+" markdown
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+
 
 "*****************************************************************************
 "*****************************************************************************
