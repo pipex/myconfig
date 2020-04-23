@@ -98,6 +98,16 @@ j: $(BIN)/j
 $(BIN)/j: $(BIN)/brew
 	brew install autojump
 
+.PHONY: jq
+jq: $(BIN)/jq
+$(BIN)/jq: $(BIN)/brew
+	brew install jq
+
+.PHONY: yq
+jq: $(BIN)/yq
+$(BIN)/yq: $(BIN)/brew
+	brew install yq
+
 # Tmux
 .PHONY: tmux
 tmux: $(BIN)/tmux
@@ -138,7 +148,7 @@ $(BIN)/todo.sh: $(BIN)/brew
 	ln -sf $(CONFIG)/todo.cfg ~/.todo.cfg
 
 .PHONY: install-commands
-install-commands: python node rust vim tmux j todo
+install-commands: python node rust vim tmux j jq yq todo
 
 
 ##############################################

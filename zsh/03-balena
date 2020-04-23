@@ -1,0 +1,28 @@
+# vim: filetype=zsh
+# If the balena command exists define a balena-change-env cmd
+which balena &>/dev/null
+if [ $? -eq 0 ]; then
+balena-change-env () {
+        local url
+        case $1 in
+                (""|help) echo "USAGE: $0 <cloud|staging|dev|support|[url]>"
+                        echo "set the balena-cli environment"
+                        return 1 ;;
+                (support) url=balena-cloud.com  ;;
+                (prod|cloud) url=balena-cloud.com  ;;
+                (stag|staging) url=balena-staging.com  ;;
+                (dev) url=my.devenv.local  ;;
+                (*) if test -z "$2"
+                        then
+                                echo "USAGE: $0 $1 <url>"
+                                return 1
+                        fi
+                        url=$1  ;;
+        esac
+        yq write ~/.balenarc.yml balenaUrl "${url}" | sponge ~/.balenarc.yml
+        local token_path="${HOME}/.balena/token" 
+        local env_token_path="${token_path}.${1}" 
+        ln -fvs "${env_token_path}" "${token_path}"
+        export VIRTUAL_ENV_LABEL="${1}" 
+}
+fi
