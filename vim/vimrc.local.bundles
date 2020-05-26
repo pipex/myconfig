@@ -6,3 +6,4 @@ Plug 'pipex/vim-uncrustify'                   " Uncrustify file and range
 Plug 'rhysd/rust-doc.vim'                     " Rust documentation
 Plug 'airblade/vim-rooter'                    " Change root directory
 Plug 'evanleck/vim-svelte'                    " Svelte syntax highlighting
+Plug 'editorconfig/editorconfig-vim'          " Editorconfig styles
