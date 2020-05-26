@@ -12,7 +12,6 @@
         }
     },
     "coc.preferences.formatOnSaveFiletypes": ["css", "Markdown", "javascript", 
-        "typescript", "svelte", "rust", "c", "cpp"],
-    // remove suggestion to use import instead of require for node
-    "javascript.suggestionActions.enabled": false
+        "typescript", "svelte", "rust", "c", "cpp", "javascriptreact", "typescriptreact"],
+    "tslint.autoFixOnSave": true
 }
