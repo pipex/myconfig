@@ -31,3 +31,5 @@ autocmd FileType cpp vnoremap <buffer> <c-f> :call RangeUncrustify('cpp')<CR>
 " Configure editorconfig to work with fugitive
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
+" Recognize dockerfile.template as docker
+autocmd BufNewFile,BufRead Dockerfile.template set filetype=dockerfile
