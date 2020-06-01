@@ -1,0 +1,2 @@
+# vim: filetype=zsh
+export REACT_EDITOR=false
