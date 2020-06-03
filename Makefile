@@ -195,7 +195,7 @@ install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS
 ##############################################
 
 .PHONY: install
-install: bootstrap install-commands install-apps install-docker
+install: bootstrap install-commands install-apps
 
 
 .DEFAULT: install
