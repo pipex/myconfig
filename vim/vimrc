@@ -27,9 +27,9 @@ call plug#begin(expand('~/.vim/plugged'))
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
 Plug 'airblade/vim-gitgutter'
 Plug 'Raimondi/delimitMate'
-Plug 'majutsushi/tagbar'
 Plug 'Yggdroot/indentLine'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
@@ -250,10 +250,6 @@ set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
 " search will center on the line it's found in.
 nnoremap n nzzzv
 nnoremap N Nzzzv
-
-if exists("*fugitive#statusline")
-  set statusline+=%{fugitive#statusline()}
-endif
 
 "*****************************************************************************
 "" Abbreviations
@@ -612,7 +608,21 @@ let g:lightline = {
       \   'fileformat': 'LightlineFileformat',
       \   'filetype': 'LightlineFiletype',
       \ },
+      \ 'tabline': {
+      \   'left': [ ['buffers'] ],
+      \   'right': [ ['close'] ]
+      \ },
+      \ 'component_expand': {
+      \   'buffers': 'lightline#bufferline#buffers'
+      \ },
+      \ 'component_type': {
+      \   'buffers': 'tabsel'
       \ }
+      \ }
+
+set showtabline=2  " Show tabline
+set guioptions-=e  " Don't use GUI tabline
+
 
 function! LightlineFileformat()
   return winwidth(0) > 70 ? &fileformat : ''
