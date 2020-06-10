@@ -252,6 +252,13 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0x72-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>13</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
 		<key>0x9-0x40000</key>
 		<dict>
 			<key>Action</key>
@@ -400,7 +407,7 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>530 476 620 392 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>837 592 843 427 0 0 1680 1050 </string>
+	<string>1280 0 1277 1417 0 0 2560 1417 </string>
 	<key>NeverWarnAboutOverrides</key>
 	<true/>
 	<key>NeverWarnAboutOverrides_selection</key>
@@ -1001,6 +1008,8 @@
 		<dict>
 			<key>ASCII Anti Aliased</key>
 			<true/>
+			<key>ASCII Ligatures</key>
+			<false/>
 			<key>Ambiguous Double Width</key>
 			<false/>
 			<key>Ansi 0 Color</key>
@@ -1239,6 +1248,8 @@
 			<string>Default</string>
 			<key>Disable Window Resizing</key>
 			<true/>
+			<key>Draw Powerline Glyphs</key>
+			<false/>
 			<key>Flashing Bell</key>
 			<false/>
 			<key>Foreground Color</key>
@@ -1947,17 +1958,21 @@
 		<string>3.3.8</string>
 		<string>3.3.9</string>
 	</array>
+	<key>NoSyncBFPRecents</key>
+	<array>
+		<string>Source Code Pro for Powerline</string>
+	</array>
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
-		<string>{{0, 0}, {1680, 1050}}</string>
+		<string>{{0, 0}, {2560, 1440}}</string>
 		<key>topLeft</key>
-		<string>{221, 865}</string>
+		<string>{287, 1189}</string>
 	</dict>
 	<key>NoSyncInstallationId</key>
 	<string>BAA31FAE-1F3A-4674-95B7-54A9E6112223</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>14</integer>
+	<integer>40</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
 	<real>603403597.03090203</real>
 	<key>NoSyncOnboardingWindowHasBeenShown</key>
@@ -2744,7 +2759,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-03-03T13:40:01Z</date>
+	<date>2020-06-04T20:31:03Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
