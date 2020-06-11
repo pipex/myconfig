@@ -595,6 +595,7 @@ endif
 "*****************************************************************************
 "" Convenience variables
 "*****************************************************************************
+"
 " Lightline
 let g:lightline = {
       \ 'colorscheme': 'powerlineish',
@@ -603,6 +604,7 @@ let g:lightline = {
       \             [ 'gitbranch', 'readonly', 'filename' ] ],
       \   'right': [ 
       \              [ 'coc_warning', 'coc_error' ],
+      \              [ 'percent', 'lineinfo' ],
       \              [ 'fileformat', 'fileencoding', 'filetype' ],
       \            ]
       \ },
@@ -626,9 +628,8 @@ let g:lightline = {
       \   'coc_status': 'LightlineCocStatus'
       \ },
       \ 'tabline': {
-      \   'left': [ ['buffers'] ],
+      \   'left': [ ['tabs'] ],
       \   'right': [ 
-      \              [ 'percent', 'lineinfo' ],
       \            ]
       \ },
       \ 'component_expand': {
@@ -642,6 +643,7 @@ let g:lightline = {
       \   'coc_warning' : 'warning',
       \ }
       \ }
+
 
 function! LightlineCocStatus()
   return get(g:, 'coc_status', '')
@@ -678,3 +680,7 @@ endfunction
 
 " Use autocmd to force lightline update.
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+
+" Disable lightline on fzf search
+autocmd! FileType fzf call lightline#disable()
+  \| autocmd BufLeave <buffer> call lightline#enable() 
