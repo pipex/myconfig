@@ -681,6 +681,15 @@ endfunction
 " Use autocmd to force lightline update.
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
+
+function FZFTabLine() 
+  let s = ''
+  let s .= '%#TabLineSel#'
+  let s .= ' Fuzzy Finder '
+  let s .= '%#TabLineFill#%T'
+  return s
+endfunction
+
 " Disable lightline on fzf search
-autocmd! FileType fzf call lightline#disable()
-  \| autocmd BufLeave <buffer> call lightline#enable() 
+autocmd! FileType fzf call lightline#disable() | set tabline=%!FZFTabLine()
+  \| autocmd BufLeave <buffer> call lightline#enable()
