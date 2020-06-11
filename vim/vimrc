@@ -266,10 +266,6 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
 
-" terminal emulation
-nnoremap <silent> <leader>sh :terminal<CR>
-
-
 "*****************************************************************************
 "" Commands
 "*****************************************************************************
@@ -381,6 +377,26 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 
+" Introduce function text object
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" Use <TAB> for selections ranges.
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+
+" Find symbol of current document.
+nnoremap <silent> <leader>o  :<C-u>CocList outline<cr>
+
+" Search workspace symbols.
+nnoremap <silent> <leader>s  :<C-u>CocList -I symbols<cr>
+
+" Show actions available at this location
+nnoremap <silent> <leader>a  :CocAction<cr>
+
 "" Split
 noremap <Leader>h :<C-u>split<CR>
 noremap <Leader>v :<C-u>vsplit<CR>
@@ -412,7 +428,7 @@ let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/
 " ripgrep
 if executable('rg')
     let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*" --glob "!**/target/*"'
-    noremap <leader>s :Rg<cr>
+    noremap <leader>f :Rg<cr>
     let g:fzf_layout = { 'down': '~20%' }
     command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
@@ -427,8 +443,8 @@ nnoremap <silent> <C-p> :FZF -m<CR>
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
 
-" Search tags in current buffer
-nnoremap <silent> <leader>t :BTags<CR>
+" Find tags
+nmap <leader>t :BTags:<CR>
 
 " Disable visualbell
 set noerrorbells visualbell t_vb=
@@ -444,7 +460,7 @@ endif
 noremap YY "+y<CR>
 noremap <leader>p "+gP<CR>
 noremap XX "+x<CR>
-
+ 
 "" Buffer nav with tab
 nnoremap <Tab> :bn<CR>
 noremap <S-Tab> :bp<CR>
@@ -475,7 +491,7 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 "" Open current line on GitHub
-nnoremap <Leader>o :.Gbrowse<CR>
+nnoremap <Leader>gh :Gbrowse<CR>
 
 " ; as :
 nnoremap ; :
