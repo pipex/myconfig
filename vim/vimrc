@@ -555,9 +555,6 @@ augroup vimrc-python
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
-" vim-airline
-let g:airline#extensions#virtualenv#enabled = 1
-
 " Syntax highlight
 " Default highlight is better than polyglot
 let g:polyglot_disabled = ['python']
@@ -584,9 +581,14 @@ endif
 "*****************************************************************************
 " Lightline
 let g:lightline = {
+      \ 'colorscheme': 'powerlineish',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'gitbranch', 'readonly', 'filename' ] ],
+      \   'right': [ 
+      \              [ 'coc_warning', 'coc_error' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ],
+      \            ]
       \ },
       \ 'mode_map': {
         \ 'n' : 'N',
@@ -603,33 +605,53 @@ let g:lightline = {
         \ },
       \ 'component_function': {
       \   'filename': 'LightlineFilename',
-      \   'cocstatus': 'coc#status',
       \   'gitbranch': 'fugitive#head',
-      \   'fileformat': 'LightlineFileformat',
       \   'filetype': 'LightlineFiletype',
+      \   'coc_status': 'LightlineCocStatus'
       \ },
       \ 'tabline': {
       \   'left': [ ['buffers'] ],
-      \   'right': [ ['close'] ]
+      \   'right': [ 
+      \              [ 'percent', 'lineinfo' ],
+      \            ]
       \ },
       \ 'component_expand': {
-      \   'buffers': 'lightline#bufferline#buffers'
+      \   'buffers': 'lightline#bufferline#buffers',
+      \   'coc_error' : 'LightlineCocErrors',
+      \   'coc_warning' : 'LightlineCocWarnings',
       \ },
       \ 'component_type': {
-      \   'buffers': 'tabsel'
+      \   'buffers': 'tabsel',
+      \   'coc_error' : 'error',
+      \   'coc_warning' : 'warning',
       \ }
       \ }
+
+function! LightlineCocStatus()
+  return get(g:, 'coc_status', '')
+endfunction
+
+function! s:LightlineCocDiagnostic(kind, sign) abort
+  let info = get(b:, 'coc_diagnostic_info', 0)
+  if empty(info) || get(info, a:kind, 0) == 0
+    return ''
+  endif
+  return printf('%s%d', a:sign, info[a:kind])
+endfunction
+
+function! LightlineCocErrors() abort
+  return s:LightlineCocDiagnostic('error', '×')
+endfunction
+
+function! LightlineCocWarnings() abort
+  return s:LightlineCocDiagnostic('warning', '•')
+endfunction
 
 set showtabline=2  " Show tabline
 set guioptions-=e  " Don't use GUI tabline
 
-
-function! LightlineFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
-endfunction
-
 function! LightlineFiletype()
-  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : '') : ''
 endfunction
 
 function! LightlineFilename()
