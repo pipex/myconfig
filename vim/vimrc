@@ -604,7 +604,6 @@ let g:lightline = {
       \             [ 'gitbranch', 'readonly', 'filename' ] ],
       \   'right': [ 
       \              [ 'coc_warning', 'coc_error' ],
-      \              [ 'percent', 'lineinfo' ],
       \              [ 'fileformat', 'fileencoding', 'filetype' ],
       \            ]
       \ },
@@ -628,8 +627,9 @@ let g:lightline = {
       \   'coc_status': 'LightlineCocStatus'
       \ },
       \ 'tabline': {
-      \   'left': [ ['tabs'] ],
+      \   'left': [ ['buffers'] ],
       \   'right': [ 
+      \              ['percent', 'lineinfo']
       \            ]
       \ },
       \ 'component_expand': {
@@ -644,6 +644,10 @@ let g:lightline = {
       \ }
       \ }
 
+
+" Enable clickable buffers in bufferline
+let g:lightline.component_raw = {'buffers': 1}
+let g:lightline#bufferline#clickable = 1
 
 function! LightlineCocStatus()
   return get(g:, 'coc_status', '')
@@ -681,11 +685,16 @@ endfunction
 " Use autocmd to force lightline update.
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
+" Redraw tabline on cursor move to update lineinfo (does not do it
+" automatically)
+autocmd CursorMoved * silent :redrawtabline
+autocmd CursorMovedI * silent :redrawtabline
+
 
 function FZFTabLine() 
   let s = ''
   let s .= '%#TabLineSel#'
-  let s .= ' Fuzzy Finder '
+  let s .= ' FZF '
   let s .= '%#TabLineFill#%T'
   return s
 endfunction
