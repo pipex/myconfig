@@ -130,7 +130,7 @@ set shiftwidth=2
 set expandtab
 
 "" Map leader to ,
-let mapleader=','
+let mapleader = "\<Space>"
 
 "" Enable hidden buffers
 set hidden
@@ -172,6 +172,11 @@ set formatoptions+=n " detect lists for formatting
 set formatoptions+=b " auto-wrap in insert mode, and do not wrap old long lines
 
 set fileformats=unix,dos,mac
+
+" Decent wildmenu
+set wildmenu
+set wildmode=list:longest
+set wildignore=.hg,.svn,*~,*.png,*.jpg,*.gif,*.settings,Thumbs.db,*.min.js,*.swp,publish/*,intermediate/*,*.o,*.hi,Zend,vendor
 
 if exists('$SHELL')
     set shell=$SHELL
@@ -398,8 +403,8 @@ nnoremap <silent> <leader>s  :<C-u>CocList -I symbols<cr>
 nnoremap <silent> <leader>a  :CocAction<cr>
 
 "" Split
-noremap <Leader>h :<C-u>split<CR>
-noremap <Leader>v :<C-u>vsplit<CR>
+noremap <Leader>hh :<C-u>split<CR>
+noremap <Leader>vv :<C-u>vsplit<CR>
 " Sane splits
 set splitright
 set splitbelow
@@ -440,6 +445,7 @@ endif
 
 nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <C-p> :FZF -m<CR>
+nnoremap <silent> <leader>p :FZF -m<CR>
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
 
@@ -457,13 +463,19 @@ if has('unnamedplus')
   set clipboard=unnamed,unnamedplus
 endif
 
-noremap YY "+y<CR>
-noremap <leader>p "+gP<CR>
-noremap XX "+x<CR>
+" <leader>A will select all text
+map <leader>aa <esc>ggVG<CR>
+
+" <leader>n creates a new buffer
+nnoremap <leader>n :enew<CR>
+
+" Jumps
+nnoremap , <C-O>
+nnoremap . <C-I>
  
 "" Buffer nav with tab
 nnoremap <Tab> :bn<CR>
-noremap <S-Tab> :bp<CR>
+nnoremap <S-Tab> :bp<CR>
 
 " <leader><leader> toggles between buffers
 nnoremap <leader><leader> <c-^>
@@ -472,7 +484,7 @@ nnoremap <leader><leader> <c-^>
 noremap <leader>c :bd<CR>
 
 "" Clean search (highlight)
-nnoremap <silent> <leader><space> :noh<cr>
+nnoremap <silent> <leader>/ :noh<cr>
 
 "" Switching windows
 noremap <C-j> <C-w>j
