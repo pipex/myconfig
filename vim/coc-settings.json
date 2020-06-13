@@ -12,6 +12,5 @@
         }
     },
     "coc.preferences.formatOnSaveFiletypes": ["css", "Markdown", "javascript", 
-        "typescript", "svelte", "rust", "c", "cpp", "javascriptreact", "typescriptreact"],
-    "tslint.autoFixOnSave": true
+        "typescript", "svelte", "rust", "cpp", "javascriptreact", "typescriptreact"]
 }
