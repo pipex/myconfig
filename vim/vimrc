@@ -470,8 +470,8 @@ map <leader>aa <esc>ggVG<CR>
 nnoremap <leader>n :enew<CR>
 
 " Jumps
-nnoremap , <C-O>
-nnoremap . <C-I>
+"nnoremap <leader>, <C-O>
+"nnoremap <leader>. <C-I>
  
 "" Buffer nav with tab
 nnoremap <Tab> :bn<CR>
