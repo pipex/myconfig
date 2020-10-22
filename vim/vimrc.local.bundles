@@ -7,3 +7,5 @@ Plug 'rhysd/rust-doc.vim'                     " Rust documentation
 Plug 'airblade/vim-rooter'                    " Change root directory
 Plug 'evanleck/vim-svelte'                    " Svelte syntax highlighting
 Plug 'editorconfig/editorconfig-vim'          " Editorconfig styles
+Plug 'jjo/vim-cue'                            " Cuelang
+Plug 'vimwiki/vimwiki'                        " VIM Wiki

@@ -18,6 +18,10 @@ if !filereadable(vimplug_exists)
   autocmd VimEnter * PlugInstall
 endif
 
+" This must be defined before loading polyglot
+" Python default highlight is better than polyglot
+let g:polyglot_disabled = ['python']
+
 " Required:
 call plug#begin(expand('~/.vim/plugged'))
 
@@ -67,7 +71,9 @@ Plug 'mattn/emmet-vim'
 
 " javascript
 "" Javascript Bundle
-Plug 'jelera/vim-javascript-syntax'
+"Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
 
 
 " python
@@ -560,9 +566,6 @@ autocmd FileType html,css,svelte,jsx,tsx EmmetInstall
 let g:user_emmet_leader_key='<C-F>'
 
 
-" javascript
-let g:javascript_enable_domhtmlcss = 1
-
 " allow jsonc
 autocmd FileType json syntax match Comment +\/\/.\+$+
 
@@ -584,8 +587,6 @@ augroup vimrc-python
 augroup END
 
 " Syntax highlight
-" Default highlight is better than polyglot
-let g:polyglot_disabled = ['python']
 let python_highlight_all = 1
 
 " typescript
