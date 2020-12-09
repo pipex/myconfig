@@ -9,3 +9,4 @@ Plug 'evanleck/vim-svelte'                    " Svelte syntax highlighting
 Plug 'editorconfig/editorconfig-vim'          " Editorconfig styles
 Plug 'jjo/vim-cue'                            " Cuelang
 Plug 'vimwiki/vimwiki'                        " VIM Wiki
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
