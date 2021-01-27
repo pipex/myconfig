@@ -1,0 +1,5 @@
+# vim: filetype=zsh
+
+if [ -f ~/.ghcup/env ]; then
+  source ~/.ghcup/env
+fi
