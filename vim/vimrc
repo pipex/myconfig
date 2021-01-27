@@ -157,9 +157,9 @@ nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
 
 " Very magic by default
-nnoremap ? ?\v
-nnoremap / /\v
-cnoremap %s/ %sm/
+" nnoremap ? ?\v
+" nnoremap / /\v
+" cnoremap %s/ %sm/
 
 set diffopt+=iwhite " No whitespace in vimdiff
 " Make diffing better: https://vimways.org/2018/the-power-of-diff/
