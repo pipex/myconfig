@@ -38,6 +38,7 @@ fonts: | $(CONFIG)
 shell: | $(CONFIG)
 	# Install oh-my-zsh
 	sh -c "$$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+		ln -sf $(CONFIG)/oh-my-zsh ~/.ohmyzsh/custom && \
 		ln -sf $(CONFIG)/zsh/zshrc ~/.zshrc && \
 		ln -sf $(CONFIG)/zsh ~/.zsh
 
@@ -86,7 +87,7 @@ $(BIN)/ctags: $(BIN)/brew
 # Vim
 .PHONY: vim
 vim: $(BIN)/nvim
-$(BIN)/nvim: ~/.vimrc $(BIN)/fzf $(BIN)/rg $(BIN)/ccls $(BIN)/ctags
+$(BIN)/nvim: ~/.vimrc $(BIN)/fzf $(BIN)/rg
 	brew install neovim
 	eval "$$(pyenv init -)" && \
 		pip install --upgrade neovim && \
@@ -128,17 +129,23 @@ $(BIN)/nvm: $(BIN)/brew
 		nvm install $(NODE_VERSION) && \
 		npm install -g yarn
 
+# GO
+.PHONY: go
+go: $(BIN)/go
+$(BIN)/go: $(BIN)/brew
+	brew install go
+
 # Vagrant
 .PHONY: vagrant
 vagrant: $(BIN)/vagrant
 $(BIN)/vagrant: $(BIN)/brew virtualbox
 	brew cask install vagrant
 
-# Docker
-.PHONY: install-docker
-install-docker: $(BIN)/docker
+# Docker machine
+.PHONY: docker-machine
+docker-machine: $(BIN)/docker-machine
 $(BIN)/docker: $(BIN)/brew virtualbox
-	brew install docker-machine docker
+	brew install docker-machine
 	brew services start docker-machine
 
 .PHONY: todo
@@ -148,7 +155,7 @@ $(BIN)/todo.sh: $(BIN)/brew
 	ln -sf $(CONFIG)/todo.cfg ~/.todo.cfg
 
 .PHONY: install-commands
-install-commands: python node rust vim tmux j jq yq todo
+install-commands: python node rust vim tmux j jq yq todo go
 
 
 ##############################################
@@ -180,6 +187,9 @@ $(APPS)/AppCleaner.app: | $(BIN)/brew
 $(APPS)/The\ Unarchiver.app: | $(BIN)/brew
 	brew cask install the-unarchiver
 
+$(APPS)/Docker.app: | $(BIN)/brew
+	brew cask install docker
+
 # VirtualBox
 .PHONY: virtualbox
 virtualbox: $(APPS)/VirtualBox.app
@@ -187,7 +197,7 @@ $(APPS)/VirtualBox.app: | $(BIN)/brew
 	brew cask install virtualbox
 
 .PHONY: install-apps
-install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS)/Spotify.app $(APPS)/AppCleaner.app $(APPS)/The\ Unarchiver.app
+install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS)/Spotify.app $(APPS)/AppCleaner.app $(APPS)/The\ Unarchiver.app $(APPS)/Docker.app
 
 
 ##############################################
