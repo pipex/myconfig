@@ -1,2 +1,7 @@
 # vim: filetype=zsh
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+if [ -f /usr/local/etc/profile.d/autojump.sh ]
+then 
+	. /usr/local/etc/profile.d/autojump.sh
+else if [ -f /usr/share/autojump/autojump.sh ]
+	. /usr/share/autojump/autojump.sh
+fi
