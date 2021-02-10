@@ -2,8 +2,9 @@
 # System configuration
 ##############################################
 
-PYTHON_VERSION ?= 3.7.6
+PYTHON_VERSION ?= 3.8.3
 NODE_VERSION ?= lts/dubnium
+SHELL=/bin/bash
 
 
 ##############################################
@@ -20,7 +21,7 @@ CONFIG=~/.myconfig
 
 # Install Homebrew
 $(BIN)/brew: 
-	/usr/bin/ruby -e "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Install git
 $(BIN)/git:
@@ -35,10 +36,10 @@ fonts: | $(CONFIG)
 	cp $(CONFIG)/fonts/*.otf /Library/Fonts
 
 .PHONY: shell
-shell: | $(CONFIG)
+shell: ~/.oh-my-zsh
+~/.oh-my-zsh: | $(CONFIG)
 	# Install oh-my-zsh
 	sh -c "$$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
-		ln -sf $(CONFIG)/oh-my-zsh ~/.ohmyzsh/custom && \
 		ln -sf $(CONFIG)/zsh/zshrc ~/.zshrc && \
 		ln -sf $(CONFIG)/zsh ~/.zsh
 
@@ -56,11 +57,13 @@ $(BIN)/pyenv: $(BIN)/brew
 .PHONY: python
 python: ~/.pyenv/versions/$(PYTHON_VERSION)/bin/python
 ~/.pyenv/versions/$(PYTHON_VERSION)/bin/python: $(BIN)/brew $(BIN)/pyenv
-	PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install $(PYTHON_VERSION)
+	# https://github.com/pyenv/pyenv/issues/1643
+	PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install --patch $(PYTHON_VERSION) < <(curl -sSL https://github.com/python/cpython/commit/8ea6353.patch)
 	eval "$$(pyenv init -)" && pyenv global $(PYTHON_VERSION) && pip install --upgrade pip
 
 .PHONY: rust
-rust:
+rust: ~/.cargo/bin/rustc
+~/.cargo/bin/rustc:
 	curl -sf -L https://static.rust-lang.org/rustup.sh | sh
 	
 ~/.vimrc: $(CONFIG) 
@@ -114,11 +117,13 @@ $(BIN)/yq: $(BIN)/brew
 tmux: $(BIN)/tmux
 $(BIN)/tmux: $(BIN)/brew | $(CONFIG)
 	# Install version 2.9a_1
-	brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/c2a5cd21a94f5574458e16198f2c4a1b7a93a0c9/Formula/tmux.rb && brew pin tmux
+	curl https://raw.githubusercontent.com/Homebrew/homebrew-core/c2a5cd21a94f5574458e16198f2c4a1b7a93a0c9/Formula/tmux.rb -o tmux.rb && \
+		brew install --formula ./tmux.rb && \
+		brew pin tmux
 	git clone https://github.com/samoshkin/tmux-config.git
 	./tmux-config/install.sh
 	ln -sf $(CONFIG)/tmux/tmux.conf ~/.tmux.conf
-	rm -rf ./tmux-config
+	rm -rf ./tmux-config ./tmux.rb
 
 # NVM and Node
 .PHONY: node
@@ -139,7 +144,7 @@ $(BIN)/go: $(BIN)/brew
 .PHONY: vagrant
 vagrant: $(BIN)/vagrant
 $(BIN)/vagrant: $(BIN)/brew virtualbox
-	brew cask install vagrant
+	brew install vagrant
 
 # Docker machine
 .PHONY: docker-machine
@@ -164,37 +169,37 @@ install-commands: python node rust vim tmux j jq yq todo go
 
 # iTerm2
 $(APPS)/iTerm.app: | $(BIN)/brew
-	brew cask install iterm2
+	brew install iterm2
 
 # Bitwarden
 $(APPS)/Bitwarden.app: | $(BIN)/brew
-	brew cask install bitwarden
+	brew install bitwarden
 
 # Firefox
 $(APPS)/Firefox.app: | $(BIN)/brew
-	brew cask install firefox
+	brew install firefox
 
 # Magnet
 $(APPS)/Magnet.app: | $(BIN)/brew
 	echo "Not implemented yet. Install Magnet using APP store"
 
 $(APPS)/Spotify.app: | $(BIN)/brew
-	brew cask install spotify
+	brew install spotify
 
 $(APPS)/AppCleaner.app: | $(BIN)/brew
-	brew cask install appcleaner
+	brew install appcleaner
 
 $(APPS)/The\ Unarchiver.app: | $(BIN)/brew
-	brew cask install the-unarchiver
+	brew install the-unarchiver
 
 $(APPS)/Docker.app: | $(BIN)/brew
-	brew cask install docker
+	brew install docker
 
 # VirtualBox
 .PHONY: virtualbox
 virtualbox: $(APPS)/VirtualBox.app
 $(APPS)/VirtualBox.app: | $(BIN)/brew
-	brew cask install virtualbox
+	brew install virtualbox
 
 .PHONY: install-apps
 install-apps: $(APPS)/Bitwarden.app $(APPS)/iTerm.app $(APPS)/Firefox.app $(APPS)/Spotify.app $(APPS)/AppCleaner.app $(APPS)/The\ Unarchiver.app $(APPS)/Docker.app
