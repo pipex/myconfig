@@ -29,22 +29,22 @@ if `which todo.sh &>/dev/null`; then
     fi
 
     # show B priority 75% of the time
-    m=$(lines todo "(B)")
-    if [ $r -lt 75 ] && [ $m -gt 0 ]; then
+    if [ $r -lt 75 ]; then
+        m=$(lines todo "(B)")
         todos="$todos$(todo "(B)")\n"
         showing=$(($showing + $m))
     fi
 
     # show C priority 50% of the time
-    l=$(lines todo "(C)")
-    if [ $r -lt 50 ] && [ $l -gt 0 ]; then
+    if [ $r -lt 50 ]; then
+        l=$(lines todo "(C)")
         todos="$todos$(todo "(C)")\n"
         showing=$(($showing + $l))
     fi
 
     # ocassionally show unimportant
-    n=$(lines todo -"(A)" -"(B)" -"(C)")
-    if [ $r -lt 25 ] && [ $n -gt 0 ]; then
+    if [ $r -lt 25 ]; then
+        n=$(lines todo -"(A)" -"(B)" -"(C)")
         todos="$todos$(todo -"(A)" -"(B)" -"(C)")\n"
         showing=$(($showing + $n))
     fi
