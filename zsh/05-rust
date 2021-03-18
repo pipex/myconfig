@@ -1,0 +1,6 @@
+# vim: filetype=zsh
+
+if [ -d ~/.cargo ]; then
+  export CARGO_HOME=${HOME}/.cargo
+  export PATH="$PATH:${CARGO_HOME}/bin"
+fi
