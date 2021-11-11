@@ -52,4 +52,10 @@ alias tmux="tmux -u"
 # The most important
 alias vi=vim
 
+# Clone supervisor to the given directory
+function cs {
+  dir=${1:-"balena-supervisor"}
+  git clone git@github.com:balena-os/balena-supervisor.git ./$dir  && cd ./$dir && npm ci
+}
+
 which todo.sh &>/dev/null && alias t="todo.sh -P"
