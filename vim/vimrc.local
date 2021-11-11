@@ -14,10 +14,11 @@ let g:C_Ctrl_j = "off"          " disable Ctrl-J from c.vim
 
 """ Key bindings
 set foldmethod=syntax           " Fold por sintaxis
-set foldnestmax=1               " Maximo de folds internos
 set foldminlines=3              " Minimo de lineas para realizar fold
 set foldlevel=99                " Start unfolded"
-map F za                        " Abrir y cerrar folds con shift+F
+" map F za                        " Abrir y cerrar folds con shift+F
+nnoremap F za
+vnoremap F za
 
 " Uncrustify
 let g:uncrustify_cfg_file_path = 'uncrustify.cfg'
@@ -36,3 +37,6 @@ autocmd BufNewFile,BufRead Dockerfile.template set filetype=dockerfile
 
 " Thin cursor
 set guicursor=i:ver25-iCursor
+
+" format with goimports instead of gofmt
+let g:go_fmt_command = "goimports"

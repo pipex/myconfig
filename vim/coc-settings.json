@@ -12,5 +12,12 @@
         }
     },
     "coc.preferences.formatOnSaveFiletypes": ["css", "Markdown", "javascript", 
-        "typescript", "svelte", "rust", "cpp", "javascriptreact", "typescriptreact"]
+        "typescript",
+        "svelte",
+        "rust",
+        "cpp",
+        "javascriptreact",
+        "typescriptreact"
+      ],
+      "svelte.enable-ts-plugin": true
 }

@@ -53,51 +53,9 @@ Plug 'Shougo/vimproc.vim', {'do': g:make}
 " Semantic language support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-"*****************************************************************************
-"" Custom bundles
-"*****************************************************************************
+" Syntax highlighting
+Plug 'https://github.com/nvim-treesitter/nvim-treesitter', { 'branch': '0.5-compat', 'do': ':TSUpdate' }
 
-" c
-Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
-Plug 'ludwig/split-manpage.vim'
-
-" html
-"" HTML Bundle
-Plug 'hail2u/vim-css3-syntax'
-Plug 'gorodinskiy/vim-coloresque'
-Plug 'tpope/vim-haml'
-Plug 'mattn/emmet-vim'
-
-
-" javascript
-"" Javascript Bundle
-"Plug 'jelera/vim-javascript-syntax'
-Plug 'pangloss/vim-javascript'
-Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
-
-
-" python
-"" Python Bundle
-Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-
-
-" rust
-" Rust.vim
-Plug 'rust-lang/rust.vim'
-
-
-" typescript
-Plug 'leafgarland/typescript-vim'
-Plug 'HerringtonDarkholme/yats.vim'
-
-" Other languages
-Plug 'cespare/vim-toml'
-Plug 'stephpy/vim-yaml'
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-
-
-"*****************************************************************************
 "*****************************************************************************
 
 "" Include user's extra bundle
@@ -313,13 +271,6 @@ augroup END
 augroup vimrc-wrapping
   autocmd!
   autocmd BufRead,BufNewFile *.txt call s:setupWrapping()
-augroup END
-
-"" make/cmake
-augroup vimrc-make-cmake
-  autocmd!
-  autocmd FileType make setlocal noexpandtab
-  autocmd BufNewFile,BufRead CMakeLists.txt setlocal filetype=cmake
 augroup END
 
 set autoread

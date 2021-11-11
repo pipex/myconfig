@@ -3,9 +3,9 @@ Plug 'tmux-plugins/vim-tmux-focus-events'     " Focus events from tmux
 Plug 'roxma/vim-tmux-clipboard'               " Integrate with tmux clipboard
 Plug 'christoomey/vim-tmux-navigator'         " Integrate with tmux key bindings
 Plug 'pipex/vim-uncrustify'                   " Uncrustify file and range
-Plug 'rhysd/rust-doc.vim'                     " Rust documentation
+" Plug 'rhysd/rust-doc.vim'                     " Rust documentation
 Plug 'airblade/vim-rooter'                    " Change root directory
-Plug 'evanleck/vim-svelte'                    " Svelte syntax highlighting
+ Plug 'evanleck/vim-svelte'                    " Svelte syntax highlighting
 Plug 'editorconfig/editorconfig-vim'          " Editorconfig styles
 Plug 'jjo/vim-cue'                            " Cuelang
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
