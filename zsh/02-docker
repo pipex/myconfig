@@ -1,7 +1,7 @@
 # vim: filetype=zsh
 DOCKER_MACHINE="default"
 if which docker-machine &>/dev/null; then
-    if docker-machine status $DOCKER_MACHINE | grep "Running" &> /dev/null; then
+    if docker-machine status $DOCKER_MACHINE &> /dev/null | grep "Running"; then
         eval $(docker-machine env $DOCKER_MACHINE)
     fi
 fi

@@ -35,7 +35,7 @@ alias ping='ping -c 5'
 alias fastping='ping -c 100 -s.2'
 
 # Other useful aliases
-alias reload='source ~/.bash_profile'
+alias reload='source ~/.zshrc'
 alias ..="cd .."
 alias back='cd -'
 alias ~='cd ~'
@@ -48,6 +48,7 @@ alias where="pwd"
 alias h='history'
 alias untar="tar -xvf"
 alias tmux="tmux -u"
+alias lg="lazygit"
 
 # The most important
 alias vi=vim
@@ -57,5 +58,3 @@ function cs {
   dir=${1:-"balena-supervisor"}
   git clone git@github.com:balena-os/balena-supervisor.git ./$dir  && cd ./$dir && npm ci
 }
-
-which todo.sh &>/dev/null && alias t="todo.sh -P"

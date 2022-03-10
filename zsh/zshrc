@@ -1,7 +1,7 @@
 if [[ -d ~/.zsh ]]; then
 	for i in ~/.zsh/*; do
-		if [[ -f $i ]] && [[ $(basename $i) != "zshrc" ]]; then
-			source $i
+		if [[ -f $i ]] && [[ $(basename $i) != "zshrc" ]] && [[ "${i##*.}" != "disabled" ]]; then
+			time source $i
 		fi
 	done
 fi
