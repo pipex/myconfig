@@ -91,7 +91,8 @@ local config = {
     ]])
 
 		-- terminal mappings
-		tmap("<esc><esc>", "<c-\\><c-n>")
+		tmap("<Leader><esc>", "<c-\\><c-n>")
+		tmap("<Esc><esc>", "<c-\\><c-n>:ToggleTerm<CR>")
 		tmap("<c-h>", "<c-\\><c-n><c-w>h")
 		tmap("<c-j>", "<c-\\><c-n><c-w>j")
 		tmap("<c-k>", "<c-\\><c-n><c-w>k")
