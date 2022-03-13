@@ -1,0 +1,27 @@
+@font-face {
+    font-family: "Sauce Code Pro";
+    font-style: normal;
+    font-weight: 200;
+    src: url(https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Light/complete/Sauce%20Code%20Pro%20Light%20Nerd%20Font%20Complete.ttf?raw=true);
+}
+
+@font-face {
+    font-family: "Sauce Code Pro";
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete.ttf?raw=true);
+}
+
+@font-face {
+    font-family: "Sauce Code Pro";
+    font-style: normal;
+    font-weight: 500;
+    src: url(https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Medium/complete/Sauce%20Code%20Pro%20Medium%20Nerd%20Font%20Complete.ttf?raw=true);
+}
+
+@font-face {
+    font-family: "Sauce Code Pro";
+    font-style: normal;
+    font-weight: 700;
+    src: url(https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Bold/complete/Sauce%20Code%20Pro%20Bold%20Nerd%20Font%20Complete.ttf?raw=true);
+}
