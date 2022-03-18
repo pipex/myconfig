@@ -30,8 +30,6 @@ local config = {
 	},
 
 	polish = function()
-		vim.cmd("colorscheme catppuccin")
-
 		local opts = { noremap = true, silent = true }
 		local set = vim.opt
 

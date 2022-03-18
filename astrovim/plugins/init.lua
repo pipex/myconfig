@@ -6,7 +6,7 @@ return function(plugins)
       as = "catppuccin",
       config = function()
         require("catppuccin").setup {
-          transparent_background = true,
+          transparent_background = false,
           term_colors = false,
           styles = {
             comments = "italic",
@@ -66,6 +66,9 @@ return function(plugins)
             notify = false,
           },
         }
+        
+        -- Set the colorscheme after the theme has been installed
+        vim.cmd [[colorscheme catppuccin]]
       end,
     },
     {
