@@ -1,10 +1,14 @@
 local config = {
-
-	-- Set colorscheme
-	colorscheme = "catppuccin",
+	plugins = {
+		packer = {
+			compile_path = vim.fn.stdpath("config") .. "/lua/packer_compiled.lua",
+		},
+	},
 
 	-- On/off virtual diagnostics text
-	virtual_text = true,
+	diagnostics = {
+		virtual_text = true,
+	},
 
 	-- Disable default plugins
 	enabled = {
@@ -25,9 +29,9 @@ local config = {
 		ts_autotag = true,
 	},
 
-	packer_file = vim.fn.stdpath("config") .. "/lua/packer_compiled.lua",
-
 	polish = function()
+		vim.cmd("colorscheme catppuccin")
+
 		local opts = { noremap = true, silent = true }
 		local set = vim.opt
 
