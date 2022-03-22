@@ -1,7 +1,10 @@
 # vim: filetype=zsh
-DOCKER_MACHINE="default"
-if which docker-machine &>/dev/null; then
-    if docker-machine status $DOCKER_MACHINE &> /dev/null | grep "Running"; then
-        eval $(docker-machine env $DOCKER_MACHINE)
+DOCKER_MACHINE="docker"
+if which limactl &>/dev/null; then
+    lima_status=$(limactl list | grep docker | awk '{print $2}')
+    if [ "${lima_status}" = "" ]; then
+      limactl start "${HOME}/.myconfig/limactl/${DOCKER_MACHINE}.yml"
+    elif [ "${lima_status}" = "Stopped" ]; then
+      limactl start "${DOCKER_MACHINE}"
     fi
 fi
