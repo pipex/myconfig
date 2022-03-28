@@ -1,0 +1,90 @@
+#!/bin/bash
+
+if [[ $# -lt 3 ]]; then
+  echo USAGE: 
+  echo    $0 DT/VERSION APPNAME [BRIDGE]
+  exit 1;
+fi
+
+imgname=$1
+appname=$2
+bridge=$3
+
+if [[ "$bridge" == "" ]]; then
+   bridge=`ifconfig | awk -F: '/^en/ { print $1 }'`
+fi
+if [[ "$bridge" == "" ]]; then
+   echo network bridge could not be determined.  Please specify.
+   exit 1;
+fi
+
+machinename=$(basename $imgname .img)
+
+delete_img_after="false"
+# If not an image file, download from balenacloud
+if [[ ! -f $imgname ]]; then
+  machinename=$(echo $imgname | cut -d '/' -s -f 1)
+  machinename=${machinename:-$imgname}
+  version=$(echo $imgname | cut -d '/' -s -f 2)
+
+  if [[ "$version" == "" ]]; then
+    echo "Expected device-type/version, here is a list of most recent dev versions for $machinename"
+    balena os versions $machinename | grep "dev" | head -n 5
+    exit 1
+  fi
+
+  device_type=$machinename
+  machinename="$machinename-$version"
+
+  imgname=/tmp/$machinename.img
+  echo Downloading $machinename
+  balena os download $device_type -o $imgname --version $version
+  delete_img_after="true"
+fi
+
+machinename="$machinename-$appname"
+
+# Configure the image
+balena os configure $imgname --application $appname --config-network ethernet --version $version
+
+# Convert the image
+VBoxManage convertdd $imgname $imgname.vmdk --format VMDK
+
+installfname=$imgname.vmdk
+
+if [[ "$delete_img_after" == "true" ]]; then
+  rm $imgname
+fi
+
+mkdir -p $HOME/virtual-devices
+VBoxManage createvm --name $machinename --ostype "Linux_64" --register --basefolder $HOME/virtual-devices
+#VBoxManage modifyvm $machinename --firmware efi64 --memory 512 --ioapic off --cpus 1 --nic1 nat --nic2 hostonly --hostonlyadapter2 vboxnet0
+VBoxManage modifyvm $machinename --firmware efi64 --memory 2048 --ioapic off --cpus 1 --nic1 nat --nic2 bridged --bridgeadapter2 $bridge
+diskfname=$HOME/virtual-devices/$machinename/$machinename.vdi
+VBoxManage createhd --filename $diskfname --size 10240 --format VDI
+VBoxManage storagectl $machinename --name "SATA-tmp" --add sata --controller IntelAhci
+VBoxManage storageattach $machinename --storagectl "SATA-tmp" --port 0 --device 0 --type hdd --medium $installfname
+VBoxManage storageattach $machinename --storagectl "SATA-tmp" --port 1 --device 0 --type hdd --medium $diskfname
+
+echo "Powering on for flashing"
+VBoxHeadless -s $machinename
+echo "Waiting for machine $machinename to poweroff..."
+until $(VBoxManage showvminfo --machinereadable $machinename | grep -q ^VMState=.poweroff.)
+do
+  sleep 1
+done
+
+VBoxManage storagectl $machinename --name "SATA-tmp" --remove
+vboxmanage closemedium $installfname
+VBoxManage storagectl $machinename --name "SATA Controller" --add sata --controller IntelAhci
+VBoxManage storageattach $machinename --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium $diskfname
+#VBoxManage storageattach $machinename --storagectl "SATA Controller" --port 1 --device 0 --type hdd --medium none
+
+#nohup VBoxHeadless -s $machinename </dev/null &>/dev/null &
+nohup vboxmanage startvm $machinename --type headless </dev/null &>/dev/null &
+
+echo "Device $machinename is starting"
+
+rm $installfname
+
+
