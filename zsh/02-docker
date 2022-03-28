@@ -7,4 +7,5 @@ if which limactl &>/dev/null; then
     elif [ "${lima_status}" = "Stopped" ]; then
       limactl start "${DOCKER_MACHINE}"
     fi
+    export DOCKER_HOST=unix://$HOME/.lima/docker/sock/docker.sock
 fi
