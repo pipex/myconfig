@@ -1,0 +1,3 @@
+[submodule "astrovim"]
+	path = astrovim
+	url = https://github.com/pipex/astrovim

@@ -88,8 +88,11 @@ probes:
 hostResolver:
   # hostResolver.hosts requires lima 0.8.3 or later. Names defined here will also
   # resolve inside containers, and not just inside the VM itself.
+  enabled: true
   hosts:
     host.docker.internal: host.lima.internal
+networks:
+  - lima: bridged
 portForwards:
 - guestSocket: "/run/user/{{.UID}}/docker.sock"
   hostSocket: "{{.Dir}}/sock/docker.sock"
