@@ -5,7 +5,7 @@ if [ $? -eq 0 ]; then
   export GOPATH="${HOME}/.go"
   # export GOROOT="$(brew --cellar go)/$(brew list --versions go | tr ' ' '\n' | tail -1)/libexec"
   # Querying brew on each start is too slow
-  export GOROOT=/usr/local/Cellar/go/1.16.6/libexec
+  export GOROOT=/usr/local/Cellar/go/1.17.8/libexec
   export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
 
   test -d "${GOPATH}" || mkdir "${GOPATH}"

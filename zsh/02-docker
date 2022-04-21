@@ -3,9 +3,9 @@ DOCKER_MACHINE="docker"
 if which limactl &>/dev/null; then
     lima_status=$(limactl list | grep docker | awk '{print $2}')
     if [ "${lima_status}" = "" ]; then
-      limactl start "${HOME}/.myconfig/limactl/${DOCKER_MACHINE}.yml"
+      echo "Limactl not running: use " limactl start "${HOME}/.myconfig/limactl/${DOCKER_MACHINE}.yml"
     elif [ "${lima_status}" = "Stopped" ]; then
-      limactl start "${DOCKER_MACHINE}"
+      echo "Limactl not running: use " limactl start "${DOCKER_MACHINE}"
     fi
     export DOCKER_HOST=unix://$HOME/.lima/docker/sock/docker.sock
 fi

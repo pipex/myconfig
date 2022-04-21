@@ -1,0 +1,4 @@
+# vim: filetype=zsh
+if which zk &>/dev/null; then
+    export ZK_NOTEBOOK_DIR="$HOME/Notes"
+fi
